@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    		<meta charset='utf-8'/>
+    		<title>Shooting Game</title>
+    		<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+    		<script src='app.js'></script>
+		<link rel='stylesheet' href='style.css'>
+	</head>
+  	<body>
+		<div class='content'>
+			<div class='title'>
+				<img src='imgs/title.png' alt='title'>
+			</div>
+  			<canvas id='gameArea' width='750' height='500'></canvas>
+  			<table id='values'>
+	  			<tr>
+		  			<td id='score'></td> 
+		  			<td id='missiles'></td> 
+		  			<td id='shield'></td> 
+		  			<td id='bombs'></td> 
+	  			</tr>
+  			</table>
+  			<table id='labels'>
+	  			<tr>
+		  			<td id='score_label'>SCORE</td> 
+					<td><img src='imgs/missiles.png', alt='missiles'></td> 
+					<td><img src='imgs/shield.png', alt='shield'</td> 
+					<td><img src='imgs/bomb.png', alt='bomb'</td> 
+	  			</tr>
+
+  			</table>
+			<h3>CONTROLS</h3>
+  			<table id='controls'>
+	  			<tr>
+					<td class='control_label'>WASD</td> 
+					<td class='control_label'>SPACE</td> 
+					<td class='control_label'>SHIFT</td> 
+					<td class='control_label'>F<td> 
+	  			</tr>
+	  			<tr>
+		  			<td class='control_description'>MOVE SHIP</td> 
+		  			<td class='control_description'>FIRE MISSILES</td> 
+		  			<td class='control_description'>ACTIVATE SHIELD</td> 
+		  			<td class='control_description'>DROP BOMBS<td> 
+	  			</tr>
+	  			<tr>
+					<td class='control_label' colspan='4'>R / C</td> 
+	  			</tr>
+	  			<tr>
+					<td class='control_description' colspan='4'>RESTART AT WAVE 1 (R) OR 5-WAVE CHECKPOINT (C) ON GAME OVER</td> 
+	  			</tr>
+  			</table>
+			<h3 class='meet'>MEET THE CAST</h3>
+  			<table>
+	  			<tr>
+					<td class='cast top'><img src='imgs/red.png', alt='simple'></td> 
+					<td class='cast top'><img src='imgs/blue.png', alt='siney'</td> 
+					<td class='cast top'><img src='imgs/yellow.png', alt='crawly'</td> 
+					<td class='cast top'><img src='imgs/white.png', alt='fasty'</td> 
+					<td class='cast top last'><img src='imgs/green.png', alt='circley'</td> 
+	  			</tr>
+	  			<tr>
+					<td class='cast'>SIMPLE</td> 
+					<td class='cast'>SINEY</td> 
+					<td class='cast'>CRAWLEY</td> 
+					<td class='cast'>FASTY</td> 
+					<td class='cast last'>CIRCLEY</td> 
+	  			</tr>
+	  			<tr>
+					<td class='cast_description'>
+						<ul>
+							<li>BEHAVIOR</li>
+							<li class='description'>MARCHING BLINDLY FORWARD WITHOUT A CARE</li>
+							<li>LIKES</li>
+							<li class='description bullet'>* CHACHKIES</li>
+							<li class='description bullet'>* OVERLY SCENTED CANDLES</li>
+							<li class='description bullet'>* FAST FASHION</li>
+							<li class='description'>&nbsp</li>
+							<li>DISLIKES</li>
+							<li class='description bullet'>* BIG WORDS</li>
+							<li class='description bullet'>* DIFFICULT CONVERSATIONS</li>
+							<li class='description bullet'>* THE X AXIS</li>
+						</ul>
+					</td> 
+					<td class='cast_description'>
+						<ul>
+							<li>BEHAVIOR</li>
+							<li class='description'>BACK AND FORTH... FOREVER</li>
+							<li class='description'>&nbsp</li>
+							<li>LIKES</li>
+							<li class='description bullet'>* TUNING FORKS</li>
+							<li class='description bullet'>* METRONOMES</li>
+							<li class='description bullet'>* SURFING</li>
+							<li class='description'>&nbsp</li>
+							<li class='description'>&nbsp</li>
+							<li>DISLIKES</li>
+							<li class='description bullet'>* 90 DEGREE PHASE SHIFTS</li>
+							<li class='description bullet'>* STUPID OVERACHIEVER CIRCLEY</li>
+						</ul>
+					</td> 
+					<td class='cast_description'> 
+						<ul>
+							<li>BEHAVIOR</li>
+							<li class='description'>CREEPING ACROSS THE BOTTOM QUARTER</li>
+							<li class='description'>&nbsp</li>
+							<li>LIKES</li>
+							<li class='description bullet'>* STALKING</li>
+							<li class='description bullet'>* SHOWING UP UNINVITED</li>
+							<li class='description'>&nbsp</li>
+							<li class='description'>&nbsp</li>
+							<li>DISLIKES</li>
+							<li class='description bullet'>* RESTRAINING ORDERS</li>
+							<li class='description bullet'>* VERTICAL MOBILITY</li>
+						</ul>
+
+					</td> 
+					<td class='cast_description'>
+						<ul>
+							<li>BEHAVIOR</li>
+							<li class='description'>GOING NOWHERE FAST</li>
+							<li class='description'>&nbsp</li>
+							<li class='description'>&nbsp</li>
+							<li>LIKES</li>
+							<li class='description bullet'>* AGGRESSIVE EXTROVERTS</li>
+							<li class='description bullet'>* MUSCLE CARS</li>
+							<li class='description bullet'>* BRAGGING ABOUT HIS SPEED</li>
+							<li>DISLIKES</li>
+							<li class='description bullet'>* BURNOUT</li>
+							<li class='description bullet'>* HANGOVERS</li>
+							<li class='description bullet'>* TURTLES</li>
+						</ul>
+					</td> 
+					<td class='cast_description last'> 
+						<ul>
+							<li>BEHAVIOR</li>
+							<li class='description'>WELL ROUNDED</li>
+							<li class='description'>&nbsp</li>
+							<li class='description'>&nbsp</li>
+							<li>LIKES</li>
+							<li class='description bullet'>* SINEY (IT'S <b>NOT</b> MUTUAL)</li>
+							<li class='description bullet'>* PIZZA</li>
+							<li class='description bullet'>* WORLD TRAVEL</li>
+							<li class='description'>&nbsp</li>
+							<li>DISLIKES</li>
+							<li class='description bullet'>* PLAID</li>
+							<li class='description bullet'>* CUBISM</li>
+							<li class='description bullet'>* BEING PUT IN A BOX</li>
+						</ul>
+					</td> 
+	  			</tr>
+  			</table>
+		</div>
+	</body>
+</html>
