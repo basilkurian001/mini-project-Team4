@@ -7,8 +7,8 @@
 
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: white;
-  color: #222;
+  background: rgb(255, 255, 255);
+  color: #000000;
   line-height: 1.6;
 }
 
@@ -36,10 +36,26 @@ header .container {
 }
 
 .logo {
-  font-size: 32px;
-  font-weight: bold;
-  color: #00ffd1;
-}
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 30px;
+      font-weight: bold;
+      color: white;
+      background-color: black;
+      padding-left: 8px;
+      padding-right: 8px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+    .logo span {
+      background-color: #f7931a; /* Orange box */
+      color: black;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-left: 5px;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
 
 /* Navigation */
 nav ul {
@@ -105,17 +121,32 @@ main {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
+/* Add this to your CSS */
 .game-card img {
-  width: 100%;
-  border-radius: 10px;
-  margin-bottom: 12px;
+   height: 160px !important;
+  width: 160px !important;
+  object-fit: cover !important;
 }
+
+.game-card a{
+  text-decoration: none;
+}
+
+/* Remove the individual ID styling */
+
 
 .game-card p {
   font-size: 18px;
   font-weight: 600;
   color: #00bfa6;
 }
+
+/* #game-thumbnail-img{
+  height: 160px !important;
+  width: 100px !important;
+  object-fit: cover !important;
+} */
+
 
 /* Footer */
 footer {
@@ -129,3 +160,62 @@ footer {
   color: #555;
   font-size: 14px;
 }
+
+/* In home_page_style.css */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #fff;
+  width: 80%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.modal-video iframe {
+  width: 400px;
+  height: 300px;
+  border-radius: 8px;
+}
+
+.modal-info {
+  flex: 1;
+}
+
+.play-button {
+  display: inline-block;
+  margin-top: 10px;
+  background: #1e90ff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.close {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-size: 28px;
+  cursor: pointer;
+}
+

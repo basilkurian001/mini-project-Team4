@@ -1,0 +1,61 @@
+.fa-hand-rock,
+.fa-hand-paper,
+.fa-hand-scissors {
+  font-size: 5rem;
+  font-weight: bolder;
+  cursor: pointer;
+}
+
+.clickable-icon i {
+    cursor: pointer;
+    padding: 20px;
+    border-radius: 10px;
+    transition: transform 0.2s ease;
+}
+
+.clickable-icon:hover i {
+    background-color: #f0f0f0;
+    transform: scale(1.1);
+}
+.default-icon-color {
+    color: #ffdc5d;
+}
+
+.modal-body ul li i {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.boards,
+.select {
+  display: none;
+}
+
+#playerSide,
+#computerSide {
+  height: 225px;
+}
+
+html, body {
+  height: 100%;
+}
+
+footer {
+  clear: both;
+  border: 1px groove #aaaaaa;
+  background: blue;
+  color: White;
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+  line-height: normal;
+  margin: 0;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+}
+
+.bold {
+    font-weight:bold;
+    font-size: 2rem;
+}

@@ -12,15 +12,17 @@
     <div class="form-box">
       <h2>Sign Up</h2>
       <p>Create your account to get started</p>
-      <form id="signupForm" onsubmit="return validateForm()">
+      <p id="error-message" style="color: red; font-weight: 500;"></p>
+
+      <form id="signupForm">
         <label for="name">Name</label>
-        <input type="text" id="name" placeholder="Enter your name" required />
+        <input type="text" id="name" name="name" placeholder="Enter your name" required />
 
         <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Enter your email" required />
+        <input type="email" id="email" name="email" placeholder="Enter your email" required />
 
         <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter your password" required minlength="6" />
+        <input type="password" id="password" name="password" placeholder="Enter your password" required minlength="6" />
 
         <label for="confirm">Confirm Password</label>
         <input type="password" id="confirm" placeholder="Re-enter your password" required />
@@ -29,36 +31,60 @@
       </form>
       <p class="bottom-text">Already have an account? <a href="./login_page.html">Log in</a></p>
     </div>
+
     <div class="image-box">
       <img src="../assets/login_page_image.png" alt="Theme Graphic" />
     </div>
   </div>
 
+  <!-- AJAX Script -->
   <script>
-    function validateForm() {
+    document.getElementById("signupForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
       const confirm = document.getElementById("confirm").value;
+      const errorMessage = document.getElementById("error-message");
 
+      errorMessage.textContent = "";
+
+      // Basic validation
       const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-
       if (!emailPattern.test(email)) {
-        alert("Please enter a valid email address.");
-        return false;
+        errorMessage.textContent = "Please enter a valid email address.";
+        return;
       }
 
       if (password.length < 6) {
-        alert("Password must be at least 6 characters long.");
-        return false;
+        errorMessage.textContent = "Password must be at least 6 characters.";
+        return;
       }
 
       if (password !== confirm) {
-        alert("Passwords do not match.");
-        return false;
+        errorMessage.textContent = "Passwords do not match.";
+        return;
       }
 
-      return true;
-    }
+      // Send data using AJAX (URL-encoded)
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "../backend/signup_server_validation.php", true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+      xhr.onload = function () {
+        const response = xhr.responseText.trim();
+
+        if (response === "Success") {
+          window.location.href = "login_page.html";
+        } else {
+          errorMessage.textContent = response;
+        }
+      };
+
+      const data = `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+      xhr.send(data);
+    });
   </script>
 </body>
 </html>
