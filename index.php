@@ -70,6 +70,7 @@ session_start();
         <div class="game-card"><a href="#" data-game="Space Shooter"><img src="./assets/game_thumbnails/space_shooter_thumbnail.png" alt="Strategy 1"><p>Space Shooter</p></a></div>
         <div class="game-card"><a href="#" data-game="Duck Hunt"><img src="./assets/game_thumbnails/duck_hunt_thumbnail.png" alt="Strategy 2"><p>Duck Hunt</p></a></div>
         <div class="game-card"><a href="#" data-game="Deadshot"><img src="./assets/game_thumbnails/deadshot_thumbnail.avif" alt="Strategy 3"><p>Dead Shot</p></a></div>
+        <div class="game-card"><a href="#" data-game="ClickShot"><img src="" alt="Strategy 3"><p>Click Shot</p></a></div>
       </div>
     </section>
 
@@ -162,6 +163,11 @@ session_start();
     "Deadshot": {
       src: "https://deadshot.io/",
       description: "An online multiplayer shooting game where you compete to be the last sharpshooter standing. Quick reflexes and precision aim are key!",
+      controls: " "
+    },
+    "ClickShot": {
+      src: "http://localhost:3000",
+      description: "",
       controls: " "
     }
     // Add data for other games similarly...
