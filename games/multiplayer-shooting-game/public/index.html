@@ -11,6 +11,59 @@
         background-image: url('./img/web-dark.png');
       }
     </style>
+
+        <!-- <script src="/js/authenticationChecker.js"></script> -->
+        <!-- <script src="/js/scoreHandler.js"></script> -->
+
+        <script>
+            const CHECK_AUTH_API_URL = '/api/checkAuth';
+            async function checkAuth(deadPlayerScore) {
+              let result
+                try {
+                    const response = await fetch(CHECK_AUTH_API_URL, {
+                        method: 'GET',
+                        credentials: 'include' // browser cookies for Node session
+                    });
+                    result = await response.json();
+                    if(result.authenticated){
+                      console.log("user logged in")
+                      await uploadScore("click_shot",deadPlayerScore)
+                    }
+                    else{
+                      console.log("User not logged in")
+                    }
+                    return result.authenticated ? { isLoggedIn: true, user: result.user } : { isLoggedIn: false, user: null };
+                } catch (error) {
+                    console.error('Auth check failed:', error);
+                    return { isLoggedIn: false, user: null, error: error.message };
+                }
+            }
+
+            const UPLOAD_HIGHSCORE_API_URL = '/api/uploadScore';
+            async function uploadScore(gameName="click_shot",deadPlayerScore) {
+              let result
+                try {
+                  console.log("gamename "+gameName)
+                  console.log("score: "+deadPlayerScore)
+                    const response = await fetch(UPLOAD_HIGHSCORE_API_URL,{
+                        method: 'POST',
+                        credentials: 'include', // browser cookies for Node session
+                         headers: {
+                              'Content-Type': 'application/json'
+                          },
+                        body: JSON.stringify({ gameName, score:deadPlayerScore }) // send data in body
+                    });
+                    result = await response.json();
+                    if (result.success){
+                        console.log(result.message);
+                    } else{
+                        console.log(result.error);
+                    }
+                } catch (error) {
+                    console.log("Failed to send score to server: "+error);
+                }
+            }
+        </script>
   </head>
   <body style="display: flex; align-items: center; justify-content: center;">
   <div>

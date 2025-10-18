@@ -1,0 +1,22 @@
+//These are the SQl queries used to create Tables for backend database
+
+database Name: gamehub
+
+CREATE TABLE high_scores (
+    email VARCHAR(255) PRIMARY KEY,
+    flappy_bird INT,
+    `2048` INT,
+    tetris INT,
+    pacman INT,
+    space_shooter INT,
+    duck_hunt INT,
+    click_shot INT,
+    whack_a_mole INT
+);
+
+
+CREATE TABLE login (
+    email VARCHAR(50) NOT NULL PRIMARY KEY,
+    user_name VARCHAR(30),
+    password VARCHAR(30)
+);

@@ -105,11 +105,17 @@ socket.on('updateplayers',(backendPlayers) => {
   //this is where we delete frontend players
   for(const id in frontEndPlayers){
     if(!backendPlayers[id]){
+      const deadPlayerScore = document.querySelector(`div[data-id="${id}"]`)?.getAttribute('data-score')
+      console.log("deadplayer score: "+deadPlayerScore)
       const divToDelete = document.querySelector(`div[data-id="${id}"]`)
       divToDelete.parentNode.removeChild(divToDelete)
       //reshow the username submission form when player dies
       if(id === socket.id){
         document.querySelector('#usernameForm').style.display = 'block'
+        // Upload only your score to the DB
+        if (deadPlayerScore !== null) {
+          checkAuth(deadPlayerScore)
+        }
       }
 
       delete frontEndPlayers[id]

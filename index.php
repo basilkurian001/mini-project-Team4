@@ -166,7 +166,7 @@ session_start();
       controls: " "
     },
     "ClickShot": {
-      src: "http://localhost:3000",
+      src: "http://192.168.1.2:3000",
       description: "",
       controls: " "
     }

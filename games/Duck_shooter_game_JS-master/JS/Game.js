@@ -62,6 +62,7 @@ class Game{
     }
     
     finishGame(){
+        checkAuth();
         window.clearTimeout(this.newRoundTimeout);
         let accuracy = Math.round(this.totalSuccessfulHits/this.totalShotsNumber*100);
         displayEndScreen(this.pointsHandler, this.totalSuccessfulHits, accuracy);

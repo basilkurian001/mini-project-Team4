@@ -158,7 +158,8 @@ function startTime() {
           ding_sfx.play()
         }
         setTimeout(() => {
-          scoreboardUpdater();
+          //scoreboardUpdater();
+          checkAuth(count);
         }, 1000);
       }
     }, 1000);

@@ -10,6 +10,7 @@ var bomb;
 var ship;
 var display;
 
+let numberOfTimesCheckAuthCalled = 0;
 
 const root2 = Math.sqrt(2);
 const keys = new Set();
@@ -757,6 +758,7 @@ clearKeyEvents = (event) => {
 //~~~~~~~~~~~~//
 
 restart = () => {
+	numberOfTimesCheckAuthCalled = 0;
 	bomb = null;
 	while (missilePool.onCanvas.length > 0) {
 		missilePool.ready.push(missilePool.onCanvas.shift());
@@ -781,6 +783,7 @@ restart = () => {
 }
 
 init = () => {
+	numberOfTimesCheckAuthCalled = 0;
 	canvas = document.getElementById('gameArea');
 	display = {
 		missiles: document.getElementById('missiles'),
@@ -852,6 +855,10 @@ updateCanvas = () => {
 	drawShip(ctx);
 	drawExplosions(ctx);
 	if (!ship.alive) {
+		if(numberOfTimesCheckAuthCalled == 0){
+			checkAuth();
+		}
+		numberOfTimesCheckAuthCalled++;
 		drawGameOver(ctx);
 	}
 	if (waveData.newWave) {

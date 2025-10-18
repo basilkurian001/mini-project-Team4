@@ -15,14 +15,18 @@
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
+
+  <script src="../../backend/authenticationChecker.js"></script>
+  <script src="../../backend/scoreHandler.js"></script>
+  
 </head>
 <body>
   <div class="container">
     <div class="heading">
       <h1 class="title">2048</h1>
       <div class="scores-container">
-        <div class="score-container">0</div>
-        <div class="best-container">0</div>
+        <div id="score-container" class="score-container">0</div>
+        <!-- <div class="best-container">0</div> -->
       </div>
     </div>
 
@@ -95,5 +99,21 @@
   <script src="js/local_storage_manager.js"></script>
   <script src="js/game_manager.js"></script>
   <script src="js/application.js"></script>
+  <script>
+    let score = 0;
+      async function checkAuth() {
+          const loggedIn = await checkAuthStatus();
+          if (loggedIn.isLoggedIn) {
+              console.log("User logged in");
+              // You can do post-game actions here, e.g., submit score
+              score = document.getElementById("score-container").textContent;
+              uploadScore(gameName="2048",score);
+          } else {
+              console.log("User not logged in");
+              // Optional redirect
+              // window.location.href = '/login.html';
+          }
+      }
+   </script>
 </body>
 </html>

@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="../CSS/startScreen.css">
     <script src="../JS/JQuery/jquery-3.3.1.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>   
+    <script src="/mini-project-Team4-master/backend/authenticationChecker.js"></script>
+    <script src="/mini-project-Team4-master/backend/scoreHandler.js"></script> 
 </head>
 <body>
 
@@ -121,6 +123,22 @@
     <script src="../JS/Game.js" defer="true"></script>
     <script src="../JS/StartScreen.js" defer="true"></script>
     <script src="../JS/Application.js" defer="true"></script>
+
+    <script>
+      async function checkAuth() {
+          const loggedIn = await checkAuthStatus();
+          if (loggedIn.isLoggedIn) {
+              console.log("User logged in");
+              // You can do post-game actions here, e.g., submit score
+              let score = document.getElementById("pointsSummary").textContent;
+              uploadScore(gameName="duck_hunt",score);
+          } else {
+              console.log("User not logged in");
+              // Optional redirect
+              // window.location.href = '/login.html';
+          }
+      }
+   </script>
 
 </body>
 </html>

@@ -8,6 +8,24 @@
     <meta httpEquiv="Content-Type" content="text/html"/>
     <meta charSet="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <script src="/mini-project-Team4-master/backend/authenticationChecker.js"></script>
+    <script src="/mini-project-Team4-master/backend/scoreHandler.js"></script>
+
+    <script>
+            async function checkAuth(count) {
+                const loggedIn = await checkAuthStatus();
+                if (loggedIn.isLoggedIn) {
+                    console.log("User logged in");
+                    // You can do post-game actions here, e.g., submit score
+                    uploadScore(gameName="whack_a_mole",count);
+                } else {
+                    console.log("User not logged in");
+                    // Optional redirect
+                    // window.location.href = '/login.html';
+                }
+            }
+    </script>
 </head>
 
 <body>
@@ -114,7 +132,7 @@
         </table>
 
         
-    <script src="js/script.js"></script>
+    <script src="js/script.js" defer></script>
 </body>
 
 </html>

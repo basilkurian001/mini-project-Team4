@@ -1,4 +1,4 @@
-
+let gameStarted = false;
 //board
 let board;
 let boardWidth = 360;
@@ -30,9 +30,13 @@ let topPipeImg;
 let bottomPipeImg;
 
 //physics
-let velocityX = -2; //pipes moving left speed
+let velocityX = -1; //pipes moving left speed
 let velocityY = 0; //bird jump speed
-let gravity = 0.4;
+let gravity = 0.11;
+//default
+/* let velocityX = -2; //pipes moving left speed
+let velocityY = 0; //bird jump speed
+let gravity = 0.4; */
 
 let gameOver = false;
 let score = 0;
@@ -63,10 +67,32 @@ window.onload = function() {
     requestAnimationFrame(update);
     setInterval(placePipes, 1500); //every 1.5 seconds
     document.addEventListener("keydown", moveBird);
+    document.addEventListener("touchstart", function (event) {
+        event.preventDefault(); // ✅ stops the default behavior
+        moveBird(event);        // ✅ calls your function
+    });
+
+
+    document.getElementById("startBtn").addEventListener("click", function() {
+        if (!gameStarted || gameOver) {
+            startGame();
+            this.style.visibility = "hidden"; // hides instantly
+        }
+    });
+
 }
 
 function update() {
     requestAnimationFrame(update);
+    if (!gameStarted) {
+        // Draw the bird idle on the screen
+        context.clearRect(0, 0, board.width, board.height);
+        context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
+        context.fillStyle = "white";
+        context.font = "30px sans-serif";
+        context.fillText("Press Start to Play", 30, 100);
+        return;
+    }
     if (gameOver) {
         return;
     }
@@ -106,15 +132,19 @@ function update() {
     //score
     context.fillStyle = "white";
     context.font="45px sans-serif";
-    context.fillText(score, 5, 45);
+    context.fillText("Score:"+score, 5, 45);
 
     if (gameOver) {
+        const startButton = document.getElementById("startBtn")
         context.fillText("GAME OVER", 5, 90);
+        //gameStarted = false
+        startButton.style.visibility = "visible"
+        checkAuth();
     }
 }
 
 function placePipes() {
-    if (gameOver) {
+    if (gameOver || !gameStarted) {
         return;
     }
 
@@ -148,15 +178,11 @@ function placePipes() {
 function moveBird(e) {
     if (e.code == "Space" || e.code == "ArrowUp" || e.code == "KeyX") {
         //jump
-        velocityY = -6;
-
-        //reset game
-        if (gameOver) {
-            bird.y = birdY;
-            pipeArray = [];
-            score = 0;
-            gameOver = false;
-        }
+        velocityY = -3.5;
+        //velocityY = -6; //default
+    }else if (e.type === "touchstart") {
+        velocityY = -3.5;
+        e.preventDefault();
     }
 }
 
@@ -165,4 +191,13 @@ function detectCollision(a, b) {
            a.x + a.width > b.x &&   //a's top right corner passes b's top left corner
            a.y < b.y + b.height &&  //a's top left corner doesn't reach b's bottom left corner
            a.y + a.height > b.y;    //a's bottom left corner passes b's top left corner
+}
+
+function startGame() {
+    gameStarted = true;
+    gameOver = false;
+    score = 0;
+    bird.y = birdY;
+    pipeArray = [];
+    velocityY = 0;
 }

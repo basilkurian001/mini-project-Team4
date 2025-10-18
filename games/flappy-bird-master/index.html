@@ -5,9 +5,29 @@
         <meta name="viewport", content="width=device-width, initial-scale=1.0">
         <title>Flappy Bird</title>
         <link rel="stylesheet" href="flappybird.css">
+
         <script src="flappybird.js"></script>
+        <script src="/mini-project-Team4-master/backend/authenticationChecker.js"></script>
+        <script src="/mini-project-Team4-master/backend/scoreHandler.js"></script>
+
+        <script>
+            async function checkAuth() {
+                const loggedIn = await checkAuthStatus();
+                if (loggedIn.isLoggedIn) {
+                    console.log("User logged in");
+                    // You can do post-game actions here, e.g., submit score
+                    uploadScore(gameName="flappy_bird",score);
+                } else {
+                    console.log("User not logged in");
+                    // Optional redirect
+                    // window.location.href = '/login.html';
+                }
+            }
+        </script>
+
     </head>
     <body>
         <canvas id="board"></canvas>
+        <button id="startBtn">Start Game</button>
     </body>
 </html>

@@ -1,5 +1,9 @@
 const express = require('express')
+const fetch = require('node-fetch');
 const app = express()
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //socket.io setup
 const http = require('http')
@@ -166,3 +170,55 @@ server.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
+// Proxy endpoint for auth check
+app.get('/api/checkAuth', async (req, res) => {
+    try {
+        const phpResponse = await fetch('http://192.168.1.2/mini-project-Team4-master/backend/login_server_validation.php?action=checkAuth', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json',
+                      'Cookie': req.headers.cookie || '', // forward browser cookies
+             }
+        });
+
+        const json = await phpResponse.json();
+        res.json(json);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Auth proxy failed' });
+    }
+});
+
+//proxy endpoint for updating score to DB
+app.post('/api/uploadScore', async (req,res) => {
+    try{
+       const { gameName, score } = req.body;
+       //console.log("Forwarding cookies to PHP:", req.headers.cookie);
+        //console.log("Score to upload:", score, "Game:", gameName);
+
+        const phpResponse = await fetch('http://192.168.1.2/mini-project-Team4-master/backend/score_handler.php', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                'Cookie': req.headers.cookie || '',
+            },
+            body: new URLSearchParams({
+                action: "upload_highscore",
+                score,
+                gameName
+            }),
+            credentials: "include" //includes session cookie
+        });
+
+        const result = await phpResponse.json();
+
+        if (result.success){
+            res.json({ success: true, message: result.message || 'Score updated successfully' });
+        } else if (result.error) {
+            res.status(500).json({ success: false, error: result.error || 'Server error' });
+        }
+
+    }catch (err) {
+                console.log("Failed to send score to server: "+err);
+                res.status(500).json({ success: false, error: 'Failed to send score to server' });
+            }
+});

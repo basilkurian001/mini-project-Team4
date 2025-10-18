@@ -22,6 +22,9 @@
     @media screen and (min-width: 800px) and (min-height: 800px)  { #tetris { font-size: 2.00em; width: 750px; } #menu { width: 350px; height: 700px; } #upcoming { width: 175px; height: 175px; } #canvas { width: 350px; height: 700px; } } /* 35px chunks */
     @media screen and (min-width: 900px) and (min-height: 900px)  { #tetris { font-size: 2.25em; width: 850px; } #menu { width: 400px; height: 800px; } #upcoming { width: 200px; height: 200px; } #canvas { width: 400px; height: 800px; } } /* 40px chunks */
   </style>
+
+  <script src="../../backend/authenticationChecker.js"></script>
+  <script src="../../backend/scoreHandler.js"></script>
 </head>
 
 <body>
@@ -319,6 +322,7 @@
         setNextPiece(randomPiece());
         clearActions();
         if (occupied(current.type, current.x, current.y, current.dir)) {
+          checkAuth();
           lose();
         }
       }
@@ -445,5 +449,20 @@
 
   </script>
 
+
+  <script>
+      async function checkAuth() {
+          const loggedIn = await checkAuthStatus();
+          if (loggedIn.isLoggedIn) {
+              console.log("User logged in");
+              // You can do post-game actions here, e.g., submit score
+              uploadScore(gameName="tetris",score);
+          } else {
+              console.log("User not logged in");
+              // Optional redirect
+              // window.location.href = '/login.html';
+          }
+      }
+   </script>
 </body>
 </html>

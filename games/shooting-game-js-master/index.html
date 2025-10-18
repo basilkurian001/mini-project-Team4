@@ -4,7 +4,28 @@
     		<meta charset='utf-8'/>
     		<title>Shooting Game</title>
     		<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+
+			<script src="../../backend/authenticationChecker.js"></script>
+  			<script src="../../backend/scoreHandler.js"></script>
+
     		<script src='app.js'></script>
+
+			<script>
+				async function checkAuth() {
+					const loggedIn = await checkAuthStatus();
+					if (loggedIn.isLoggedIn) {
+						console.log("User logged in");
+						// You can do post-game actions here, e.g., submit score
+						let score = document.getElementById("score").textContent;
+						uploadScore(gameName="space_shooter",score);
+					} else {
+						console.log("User not logged in");
+						// Optional redirect
+						// window.location.href = '/login.html';
+					}
+				}
+   			</script>
+
 		<link rel='stylesheet' href='style.css'>
 	</head>
   	<body>
