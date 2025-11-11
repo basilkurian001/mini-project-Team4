@@ -132,6 +132,11 @@ function randomHole(holes) {
 }
 
 function startTime() {
+  const gameOverText = document.getElementById("gameOverText");
+  if(gameOverText) gameOverText.remove();  //removes the game over text when game restarts
+  const highScoreText = document.getElementById("highScoreText");
+  if(highScoreText) highScoreText.remove();
+
   if (started === false) {
     if(volume_level) {
       start_sfx.currentTime = 0.125;
@@ -159,6 +164,7 @@ function startTime() {
         }
         setTimeout(() => {
           //scoreboardUpdater();
+          gameOverDataDisplay();
           checkAuth(count);
         }, 1000);
       }
@@ -167,12 +173,29 @@ function startTime() {
 }
 // Extra Stuff
 
-function scoreboardUpdater() {
-  finalScore = count;
-  nameContainer.classList.add('flex');
-  setTimeout(() => {
-    nameContainer.classList.add('opacity');
-  }, 100);
+function gameOverDataDisplay() {   //displays game over and highscore
+      // Create a new <div> element
+      let centerX = document.documentElement.clientWidth / 2;
+      let centerY = document.documentElement.clientHeight / 2;
+    const gameOverText = document.createElement("div");
+    gameOverText.id = "gameOverText";
+
+    // Set its text content
+    gameOverText.textContent = "GAME OVER";
+
+    // Style it directly with JS
+    gameOverText.style.position = "absolute";
+    gameOverText.style.top = centerY + "px";
+    gameOverText.style.left = centerX + "px";
+    gameOverText.style.transform = "translate(-50%, -50%)";
+    gameOverText.style.color = "white";
+    gameOverText.style.fontSize = "50px";
+    gameOverText.style.fontWeight = "bold";
+    gameOverText.style.zIndex = "9999"; // make sure it appears on top
+
+    // Add it to the page
+    document.body.appendChild(gameOverText);
+
 }
 function enterName(e) {
   if (e.keyCode === 13) {

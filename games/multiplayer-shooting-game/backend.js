@@ -222,3 +222,27 @@ app.post('/api/uploadScore', async (req,res) => {
                 res.status(500).json({ success: false, error: 'Failed to send score to server' });
             }
 });
+
+//for fetching player Highscore
+app.post('/api/fetchPlayerHighScore', async (req, res) => {
+    try{
+        const { gameName } = req.body;
+        const phpResponse = await fetch('http://192.168.1.2/mini-project-Team4-master/backend/score_handler.php', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                'Cookie': req.headers.cookie || '',
+            },
+            body: new URLSearchParams({
+                action: "fetch_highscore",
+                gameName: gameName
+            }),
+        });
+
+        const result = await phpResponse.json();
+        res.json(result);
+      }catch (err) {
+                console.log("Failed to fetch high score from server: "+err);
+                res.status(500).json({ error: 'Auth proxy failed' });
+            }
+});

@@ -6,9 +6,9 @@
         <title>Flappy Bird</title>
         <link rel="stylesheet" href="flappybird.css">
 
-        <script src="flappybird.js"></script>
         <script src="/mini-project-Team4-master/backend/authenticationChecker.js"></script>
         <script src="/mini-project-Team4-master/backend/scoreHandler.js"></script>
+        <script src="flappybird.js"></script>
 
         <script>
             async function checkAuth() {
@@ -17,16 +17,33 @@
                     console.log("User logged in");
                     // You can do post-game actions here, e.g., submit score
                     uploadScore(gameName="flappy_bird",score);
+                    context.font = "bold 24px Arial";
+                    const playerHighscore = await fetchPlayerHighscore("flappy_bird");
+                    context.fillText("Your High score: "+playerHighscore,10,150);
                 } else {
                     console.log("User not logged in");
                     // Optional redirect
                     // window.location.href = '/login.html';
                 }
             }
+            loadLeaderboard("flappy_bird");
+        // Refresh leaderboard every 10 seconds
+        setInterval(() => {
+            const leaderboardList = document.getElementById("leaderboardlist");
+            leaderboardList.innerHTML = ""; // clear old entries
+            loadLeaderboard("flappy_bird");
+        }, 15000);
         </script>
 
     </head>
     <body>
+        <div id="leaderboard">
+            <h3>🏆 TOP SCORERS</h3>
+            <div>
+                <ol id="leaderboardlist">
+                </ol>
+            </div>
+        </div>
         <canvas id="board"></canvas>
         <button id="startBtn">Start Game</button>
     </body>

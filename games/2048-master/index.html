@@ -21,12 +21,22 @@
   
 </head>
 <body>
+  <div id="leaderboard">
+    <h3 id="leaderboardheading">🏆 TOP SCORERS</h3>
+    <div>
+        <ol id="leaderboardlist">
+        </ol>
+    </div>
+  </div>
   <div class="container">
     <div class="heading">
       <h1 class="title">2048</h1>
       <div class="scores-container">
         <div id="score-container" class="score-container">0</div>
-        <!-- <div class="best-container">0</div> -->
+        <div class="highScoreDiv">
+          <div style="font-size: 15px;">HIGH SCORE</div>
+          <div id="highScoreText"></div>
+        </div>
       </div>
     </div>
 
@@ -79,15 +89,6 @@
     <p class="game-explanation">
       <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
     </p>
-    <hr>
-    <p>
-    <strong class="important">Note:</strong> This site is the official version of 2048. You can play it on your phone via <a href="http://git.io/2048">http://git.io/2048.</a> All other apps or sites are derivatives or fakes, and should be used with caution.
-    </p>
-    <hr>
-    <p>
-    Created by <a href="http://gabrielecirulli.com" target="_blank">Gabriele Cirulli.</a> Based on <a href="https://itunes.apple.com/us/app/1024!/id823499224" target="_blank">1024 by Veewo Studio</a> and conceptually similar to <a href="http://asherv.com/threes/" target="_blank">Threes by Asher Vollmer.</a>
-    </p>
-  </div>
 
   <script src="js/bind_polyfill.js"></script>
   <script src="js/classlist_polyfill.js"></script>
@@ -108,11 +109,27 @@
               // You can do post-game actions here, e.g., submit score
               score = document.getElementById("score-container").textContent;
               uploadScore(gameName="2048",score);
+              setHighScore();
           } else {
               console.log("User not logged in");
               // Optional redirect
               // window.location.href = '/login.html';
           }
+      }
+      loadLeaderboard("2048");
+      // Refresh leaderboard every 10 seconds
+      async function setHighScore() {
+        const playerHighscore = await fetchPlayerHighscore("2048");
+        const highScoreText = document.getElementById("highScoreText");
+        highScoreText.textContent = playerHighscore;
+      }
+      setInterval(() => {
+          const leaderboardList = document.getElementById("leaderboardlist");
+          leaderboardList.innerHTML = ""; // clear old entries
+          loadLeaderboard("2048");
+      }, 15000);
+      window.onload = function(){
+        setHighScore();
       }
    </script>
 </body>

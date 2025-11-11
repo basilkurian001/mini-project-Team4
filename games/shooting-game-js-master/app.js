@@ -2,6 +2,7 @@
 // Global Declarations //
 //~~~~~~~~~~~~~~~~~~~~~//
 
+let playerHighScore;
 var gameStart = false;
 var firstKeyPress = true;
 var canvas = {width: 0, height:0};
@@ -64,6 +65,12 @@ const Sprite = {
 //~~~~~~~~~~~~~~~~~~~//
 // Support Functions //
 //~~~~~~~~~~~~~~~~~~~//
+
+function setPlayerHighScore(loggedIn, _playerHighScore) {
+	if(loggedIn.isLoggedIn){
+		playerHighScore = _playerHighScore;
+	}
+}
 
 // Between 1 and Max
 getRandomInt = (max) => {
@@ -421,6 +428,13 @@ drawGameOver = (ctx) => {
 	ctx.fillStyle = 'red';
 	ctx.textAlign = 'center';
 	ctx.fillText('GAME OVER', canvas.width/2, canvas.height/2);
+
+	if(playerHighScore){
+		ctx.font = 'bold 30px Courier New';
+		ctx.fillStyle = 'red';
+		ctx.textAlign = 'center';
+		ctx.fillText('Your High Score: '+playerHighScore, canvas.width/2, canvas.height/2+40);
+	}
 }
 
 drawWaveNumber = (ctx) => {
@@ -758,6 +772,7 @@ clearKeyEvents = (event) => {
 //~~~~~~~~~~~~//
 
 restart = () => {
+	playerHighScore = null;
 	numberOfTimesCheckAuthCalled = 0;
 	bomb = null;
 	while (missilePool.onCanvas.length > 0) {
@@ -840,6 +855,7 @@ updateState = () => {
 updateCanvas = () => {
 	window.requestAnimationFrame(updateCanvas);
 	let ctx = canvas.getContext('2d');
+	ctx = canvas.getContext('2d');  //gpt code
 	ctx.fillStyle = 'black';
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	drawStars(ctx);

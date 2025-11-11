@@ -10,14 +10,108 @@
         height: 576px;
         background-image: url('./img/web-dark.png');
       }
+
+      #leaderboard {
+          z-index: 9999;
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          background: rgba(0, 0, 0, 0.6);
+          color: white;
+          padding: 10px 15px;
+          border-radius: 10px;
+          font-family: Arial, sans-serif;
+          width: auto;
+          min-width: 50px;
+      }
+      #leaderboardheading{
+          margin: 0px;
+          font-size: 16px;
+      }
+      #leaderboardlist{
+          list-style-type: decimal;
+          padding-top: 5px;
+          padding-left: 30px;
+          margin: 0;
+          font-size: 15px;
+      }
+      #playerHighScoreDIV {
+        position: relative;
+        z-index: 999999;
+        color: white;
+        font-family: sans-serif;
+        font-size: 16px;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+
     </style>
 
         <!-- <script src="/js/authenticationChecker.js"></script> -->
         <!-- <script src="/js/scoreHandler.js"></script> -->
 
         <script>
+            const LEADERBOARD_API_URL = 'http://192.168.1.2/mini-project-Team4-master/backend/score_handler.php';
+            async function loadLeaderboard(gameName) {
+                try{
+                    const response = await fetch(LEADERBOARD_API_URL, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: new URLSearchParams({
+                            action: "fetch_leaderboard",
+                            gameName: gameName
+                        }),
+                    });
+                    const result = await response.json();
+                    //const text = await response.text();
+                    //console.log("Raw response:", text);
+
+                    //console.log(result.data.username+" "+result.data.gameName);
+
+                    if(result.status=="success"){
+                        const leaderboardList = document.getElementById("leaderboardlist");
+                        result.data.forEach(player => {
+                        const li = document.createElement("li");
+                        li.textContent = `${player.user_name} - ${player[gameName]}`;
+                        leaderboardList.appendChild(li);
+                        });
+                    }
+                    else{
+                        console.log(result.error);
+                    }
+                }catch(err){
+                    console.log("Leaderboard fetch error: "+err);
+                }
+            }
+            loadLeaderboard("click_shot");
+
+            const FETCH_PLAYER_HIGHSCORE_API_URL = '/api/fetchPlayerHighScore';
+            async function fetchPlayerHighScore(gameName){
+              try{
+                  const response = await fetch(FETCH_PLAYER_HIGHSCORE_API_URL, {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ gameName }),
+                  });
+                  result = await response.json();
+                  if(result.status === "success"){
+                    console.log("playerhighscore:"+result.player_highscore);
+                    return result.player_highscore;
+                  }else {
+                      console.log("Failed to fetch player highscore: " + (result.error || 'Unknown error'));
+                    }
+              }catch(err){
+                console.log("Failed to retrive high score from server: "+err);
+              }
+            }
+
             const CHECK_AUTH_API_URL = '/api/checkAuth';
-            async function checkAuth(deadPlayerScore) {
+            async function checkAuth(deadPlayerScore,init=0) {
               let result
                 try {
                     const response = await fetch(CHECK_AUTH_API_URL, {
@@ -26,11 +120,19 @@
                     });
                     result = await response.json();
                     if(result.authenticated){
+                      if(init==1){
+                        if(!result.authenticated){return false;}
+                        window.userName = result.user.username;
+                        return true;
+                      }
                       console.log("user logged in")
-                      await uploadScore("click_shot",deadPlayerScore)
+                      await uploadScore("click_shot",deadPlayerScore);
+                      const playerHighScore = await fetchPlayerHighScore("click_shot");
+                      displayPlayerHighScore(playerHighScore);
                     }
                     else{
                       console.log("User not logged in")
+                      return false;
                     }
                     return result.authenticated ? { isLoggedIn: true, user: result.user } : { isLoggedIn: false, user: null };
                 } catch (error) {
@@ -43,7 +145,6 @@
             async function uploadScore(gameName="click_shot",deadPlayerScore) {
               let result
                 try {
-                  console.log("gamename "+gameName)
                   console.log("score: "+deadPlayerScore)
                     const response = await fetch(UPLOAD_HIGHSCORE_API_URL,{
                         method: 'POST',
@@ -63,9 +164,55 @@
                     console.log("Failed to send score to server: "+error);
                 }
             }
+
+            function displayPlayerHighScore(playerHighScore){
+              const playerHighScoreDiv = document.getElementById("playerHighScoreDIV");
+              const playerHighScoreValue = document.getElementById("playerHighScoreValue");
+              playerHighScoreValue.textContent = playerHighScore;
+              playerHighScoreDiv.style.visibility = "visible";
+            }
+            let isAuthenticatedVar = null;
+            async function initialise(reload = 0) {
+                const userNameInputHTML = document.getElementById("usernameInput");
+                const isAuthenticated = await checkAuth(0, 1);
+                if (isAuthenticated) {
+                  // ✅ User is logged in
+                  if (isAuthenticatedVar === 0 && reload === 1) {
+                    // was previously logged out but now logged in — reload to refresh session-based UI
+                    location.reload();
+                    return;
+                  }
+
+                  isAuthenticatedVar = 1;
+                  const playerHighScore = await fetchPlayerHighScore("click_shot");
+                  displayPlayerHighScore(playerHighScore);
+                  userNameInputHTML.value = window.userName;
+                  userNameInputHTML.style.visibility = "hidden";
+                } else {
+                  // ❌ User is not logged in
+                  if (isAuthenticatedVar === 1 && reload === 1) {
+                    // was logged in before, now logged out — reload the page
+                    location.reload();
+                    return;
+                  }
+                  isAuthenticatedVar = 0;
+                  userNameInputHTML.style.visibility = "visible";
+                  document.getElementById("playerHighScoreDIV").style.visibility = "hidden";
+                }
+            }
+            window.onload = initialise;
         </script>
   </head>
   <body style="display: flex; align-items: center; justify-content: center;">
+
+    <div id="leaderboard">
+        <h3 id="leaderboardheading">&#127942; TOP SCORERS</h3>
+        <div>
+            <ol id="leaderboardlist">
+            </ol>
+        </div>
+    </div>
+
   <div>
     <div
       style="
@@ -97,6 +244,13 @@
        "
     >
         <form id="usernameForm">
+
+          <div 
+            id="playerHighScoreDIV">
+            Your High Score: <span id="playerHighScoreValue">0</span>
+          </div>
+
+
           <div>
             <input
               id="usernameInput"
@@ -113,6 +267,7 @@
           </div>
           <div style="text-align: center; margin-top: 8px;">
             <button
+              id="startButton"
               style="
                 padding: 8px 20px;
                 border-radius: 100px;

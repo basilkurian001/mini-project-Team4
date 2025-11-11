@@ -15,6 +15,14 @@
 </head>
 <body>
 
+    <div id="leaderboard">
+        <h3 id="leaderboardheading">&#127942; TOP SCORERS</h3>
+        <div>
+            <ol id="leaderboardlist">
+            </ol>
+        </div>
+    </div>
+
     <div id="startScreen">
         <div class="startScreen__content">
             <br>
@@ -107,6 +115,11 @@
                     <td id="accuracySummary"></td>
                 </tr>
 
+                <tr id="playerHighScoreROW">
+                    <td>HIGH SCORE</td>
+                    <td id="playerHighScoreHTML"></td>
+                </tr>
+
             </table>
 
             <h3 id="playAgainButton" class="cursorChange" onClick="window.location.reload()">PLAY AGAIN</h3>
@@ -132,12 +145,26 @@
               // You can do post-game actions here, e.g., submit score
               let score = document.getElementById("pointsSummary").textContent;
               uploadScore(gameName="duck_hunt",score);
+              const _playerHighScoreHTML = document.getElementById("playerHighScoreHTML");
+              const playerHighscore = await fetchPlayerHighscore("duck_hunt");
+              _playerHighScoreHTML.textContent = playerHighscore;
           } else {
+              document.getElementById("playerHighScoreROW").style.visibility = "hidden";
               console.log("User not logged in");
-              // Optional redirect
-              // window.location.href = '/login.html';
           }
       }
+      loadLeaderboard("duck_hunt");
+      // Refresh leaderboard every 10 seconds
+      async function setHighScore() {
+        const playerHighscore = await fetchPlayerHighscore("duck_hunt");
+        const highScoreText = document.getElementById("highScoreText");
+        highScoreText.textContent = playerHighscore;
+      }
+      setInterval(() => {
+          const leaderboardList = document.getElementById("leaderboardlist");
+          leaderboardList.innerHTML = ""; // clear old entries
+          loadLeaderboard("duck_hunt");
+      }, 15000);
    </script>
 
 </body>

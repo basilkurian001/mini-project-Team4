@@ -139,3 +139,29 @@ body{
     100% {left:52%; bottom:32%;}
 }
 
+#leaderboard {
+    z-index: 9999;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    width: auto;
+    min-width: 50px;
+}
+#leaderboardheading{
+    margin: 0px;
+    font-size: 13px;
+}
+#leaderboardlist{
+    list-style-type: decimal;
+    padding-top: 5px;
+    padding-left: 30px;
+    margin: 0;
+    font-size: 13px;
+}
+
+

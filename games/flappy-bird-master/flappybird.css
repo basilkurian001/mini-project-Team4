@@ -27,3 +27,17 @@ body {
 #startBtn:hover {
   background-color: #ffdd33;
 }
+#leaderboard {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    width: 180px;
+}
+#leaderboardlist{
+  font-size: 23px;
+}

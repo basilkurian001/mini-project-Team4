@@ -756,3 +756,43 @@ hr {
     margin-top: 90px !important; }
   .game-message .lower {
     margin-top: 30px !important; } }
+
+  .highScoreDiv{
+    position: relative;
+    display: inline-block;
+    background: #bbada0;
+    padding: 15px 25px;
+    font-size: 25px;
+    height: 25px;
+    line-height: 0px;
+    font-weight: bold;
+    border-radius: 3px;
+    color: white;
+    margin-top: 8px;
+    text-align: center;
+  }
+  #leaderboard {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    width: auto;
+    min-width: 200px;
+}
+#leaderboardlist{
+  padding-left: 30px;
+  list-style-type: decimal;
+  margin: 0;
+  font-size: 23px;
+}
+.score-container, .highScoreDiv{
+  vertical-align: middle;
+}
+#highScoreText{
+  padding-top: 25px;
+}
+

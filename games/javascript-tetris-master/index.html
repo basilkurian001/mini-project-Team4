@@ -21,6 +21,26 @@
     @media screen and (min-width: 700px) and (min-height: 700px)  { #tetris { font-size: 1.75em; width: 650px; } #menu { width: 300px; height: 600px; } #upcoming { width: 150px; height: 150px; } #canvas { width: 300px; height: 600px; } } /* 30px chunks */
     @media screen and (min-width: 800px) and (min-height: 800px)  { #tetris { font-size: 2.00em; width: 750px; } #menu { width: 350px; height: 700px; } #upcoming { width: 175px; height: 175px; } #canvas { width: 350px; height: 700px; } } /* 35px chunks */
     @media screen and (min-width: 900px) and (min-height: 900px)  { #tetris { font-size: 2.25em; width: 850px; } #menu { width: 400px; height: 800px; } #upcoming { width: 200px; height: 200px; } #canvas { width: 400px; height: 800px; } } /* 40px chunks */
+
+    #leaderboard {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    width: auto;
+    min-width: 180px;
+    }
+    #leaderboardlist{
+      list-style-type: decimal;
+      padding-left: 30px;
+      margin: 0;
+      font-size: 23px;
+    }
+
   </style>
 
   <script src="../../backend/authenticationChecker.js"></script>
@@ -28,6 +48,13 @@
 </head>
 
 <body>
+  <div id="leaderboard">
+    <h3 id="leaderboardheading">  &#127942; TOP SCORERS</h3>
+    <div>
+        <ol id="leaderboardlist">
+        </ol>
+    </div>
+  </div>
 
   <div id="tetris">
     <div id="menu">
@@ -35,6 +62,8 @@
       <p><canvas id="upcoming"></canvas></p>
       <p>score <span id="score">00000</span></p>
       <p>rows <span id="rows">0</span></p>
+      <p id="gameOverText" style="visibility: hidden;">GAME OVER</p>
+      <p id="highScoreText" style="visibility: hidden;"></p>
     </div>
     <canvas id="canvas">
       Sorry, this example cannot be run because your browser does not support the &lt;canvas&gt; element
@@ -175,7 +204,7 @@
 
     function run() {
 
-      showStats(); // initialize FPS counter
+      //showStats(); // initialize FPS counter
       addEvents(); // attach keydown and resize events
 
       var last = now = timestamp();
@@ -227,6 +256,12 @@
         }
       }
       else if (ev.keyCode == KEY.SPACE) {
+        clearInterval(gameOverText_setInterval);
+        if(document.getElementById("gameOverText")){
+          document.getElementById("gameOverText").style.visibility = "hidden";
+        }
+        document.getElementById("highScoreText").style.visibility = "hidden";
+        document.getElementById("highScoreText").textContent = "";
         play();
         handled = true;
       }
@@ -313,7 +348,7 @@
       }
     }
 
-    function drop() {
+    async function drop() {
       if (!move(DIR.DOWN)) {
         addScore(10);
         dropPiece();
@@ -322,7 +357,12 @@
         setNextPiece(randomPiece());
         clearActions();
         if (occupied(current.type, current.x, current.y, current.dir)) {
-          checkAuth();
+          await checkAuth();
+          displayGameOverText();
+          if(playerHighscore){
+            document.getElementById("highScoreText").textContent += "Your High Score: "+playerHighscore;
+            document.getElementById("highScoreText").style.visibility = "visible";
+          }
           lose();
         }
       }
@@ -451,6 +491,7 @@
 
 
   <script>
+    let playerHighscore;
       async function checkAuth() {
           const loggedIn = await checkAuthStatus();
           if (loggedIn.isLoggedIn) {
@@ -462,6 +503,15 @@
               // Optional redirect
               // window.location.href = '/login.html';
           }
+          playerHighscore = await fetchPlayerHighscore("tetris");
+      }
+      loadLeaderboard("tetris");
+      let gameOverText_setInterval;
+      function displayGameOverText(){
+        const gameOverText = document.getElementById("gameOverText");
+        gameOverText_setInterval = setInterval(() => { 
+          gameOverText.style.visibility = gameOverText.style.visibility === "hidden" ? "visible" : "hidden";
+        }, 500);
       }
    </script>
 </body>

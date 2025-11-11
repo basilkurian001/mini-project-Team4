@@ -19,16 +19,49 @@
                     console.log("User logged in");
                     // You can do post-game actions here, e.g., submit score
                     uploadScore(gameName="whack_a_mole",count);
+                    const playerHighscore = await fetchPlayerHighscore("whack_a_mole");
+
+                    //highscore text
+                    const highScoreText = document.createElement("div");
+                    highScoreText.id = "highScoreText";
+                    highScoreText.textContent = "Your high score: ";
+                    highScoreText.style.position = "absolute";
+                    highScoreText.style.left = "50%";
+                    // 50% + 40px moves it below the first one
+                    highScoreText.style.top = "calc(50% + 60px)";
+                    highScoreText.style.transform = "translate(-50%, -50%)";
+                    highScoreText.style.color = "white";
+                    highScoreText.style.fontSize = "40px";
+                    highScoreText.style.fontWeight = "bold";
+                    highScoreText.style.zIndex = "9999";
+                    document.body.appendChild(highScoreText);
+
+                    //const highScoreText = document.getElementById("highScoreText");
+                    highScoreText.textContent += playerHighscore;
                 } else {
                     console.log("User not logged in");
                     // Optional redirect
                     // window.location.href = '/login.html';
                 }
             }
+            loadLeaderboard("whack_a_mole");
+            // Refresh leaderboard every 10 seconds
+            setInterval(() => {
+                const leaderboardList = document.getElementById("leaderboardlist");
+                leaderboardList.innerHTML = ""; // clear old entries
+                loadLeaderboard("whack_a_mole");
+            }, 15000);
     </script>
 </head>
 
 <body>
+    <div id="leaderboard">
+            <h3 id="leaderboardheading">🏆 TOP SCORERS</h3>
+            <div>
+                <ol id="leaderboardlist">
+                </ol>
+            </div>
+    </div>
     
     <form class="modal">
     <div class="title"><span>Welcome to</span><h1>Wack-A-Mole</h1></div>

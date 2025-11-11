@@ -7,7 +7,7 @@
 
     // ---- Dynamic CORS Handling ----
     $allowed_origins = array(
-        'http://localhost:3000',        // React dev or custom frontend
+        'http://localhost:3000',        //for cross origin requests
         'http://localhost',             // Local testing
         'http://192.168.1.2',           // LAN access from other devices
     );
