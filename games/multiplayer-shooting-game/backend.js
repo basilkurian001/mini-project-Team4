@@ -173,7 +173,7 @@ server.listen(port, () => {
 // Proxy endpoint for auth check
 app.get('/api/checkAuth', async (req, res) => {
     try {
-        const phpResponse = await fetch('http://192.168.1.2/mini-project-Team4-master/backend/login_server_validation.php?action=checkAuth', {
+        const phpResponse = await fetch('http://10.57.207.31/gamehub/backend/login_server_validation.php?action=checkAuth', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json',
                       'Cookie': req.headers.cookie || '', // forward browser cookies
@@ -195,7 +195,7 @@ app.post('/api/uploadScore', async (req,res) => {
        //console.log("Forwarding cookies to PHP:", req.headers.cookie);
         //console.log("Score to upload:", score, "Game:", gameName);
 
-        const phpResponse = await fetch('http://192.168.1.2/mini-project-Team4-master/backend/score_handler.php', {
+        const phpResponse = await fetch('http://10.57.207.31/gamehub/backend/score_handler.php', {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
@@ -227,7 +227,7 @@ app.post('/api/uploadScore', async (req,res) => {
 app.post('/api/fetchPlayerHighScore', async (req, res) => {
     try{
         const { gameName } = req.body;
-        const phpResponse = await fetch('http://192.168.1.2/mini-project-Team4-master/backend/score_handler.php', {
+        const phpResponse = await fetch('http://10.57.207.31/gamehub/backend/score_handler.php', {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",

@@ -1,6 +1,6 @@
 // auth-check.js
 
-const AUTH_CHECK_URL = 'http://192.168.1.2/mini-project-Team4-master/backend/login_server_validation.php';
+const AUTH_CHECK_URL = 'http://10.57.207.31/gamehub/backend/login_server_validation.php';
 //const AUTH_CHECK_URL = '../../backend/login_server_validation.php'; // Your existing auth endpoint
 
 // Check if user is logged in

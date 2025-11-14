@@ -506,6 +506,12 @@
           playerHighscore = await fetchPlayerHighscore("tetris");
       }
       loadLeaderboard("tetris");
+      setInterval(() => {
+            const leaderboardList = document.getElementById("leaderboardlist");
+            leaderboardList.innerHTML = ""; // clear old entries
+            loadLeaderboard("tetris");
+        }, 15000);
+
       let gameOverText_setInterval;
       function displayGameOverText(){
         const gameOverText = document.getElementById("gameOverText");

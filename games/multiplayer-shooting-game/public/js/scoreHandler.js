@@ -1,4 +1,4 @@
-const API_URL = 'http://192.168.1.2/mini-project-Team4-master/backend/score_handler.php';
+const API_URL = 'http://10.57.207.31/gamehub/backend/score_handler.php';
 
 async function uploadScore(gameName,score=0) {
     try{

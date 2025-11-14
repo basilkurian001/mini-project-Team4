@@ -166,7 +166,7 @@ session_start();
       controls: " "
     },
     "ClickShot": {
-      src: "http://192.168.1.2:3000",
+      src: "http://10.57.207.31:3000",
       description: "",
       controls: " "
     }

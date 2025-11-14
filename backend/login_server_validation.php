@@ -9,7 +9,7 @@
     $allowed_origins = array(
         'http://localhost:3000',        //for cross origin requests
         'http://localhost',             // Local testing
-        'http://192.168.1.2',           // LAN access from other devices
+        'http://10.57.207.31',           // LAN access from other devices
     );
 
     if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed_origins)) {
